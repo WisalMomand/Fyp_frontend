@@ -1,0 +1,114 @@
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; 
+  width: 100vw; 
+  background-color: #f8f9fa;
+}
+
+/* Login/Register Box */
+.card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Title Styling */
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Blue Highlight for Title */
+.highlight {
+  color: #007bff;
+}
+
+/* Links */
+.link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Input Group */
+.inputGroup {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+/* Labels */
+.label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Input Fields */
+.input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Forgot Password Link */
+.forgotPassword {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+/* Button Styling */
+.button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #343a40;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #212529;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem;
+  }
+
+  .card {
+    width: 90%;
+    max-width: 350px;
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .input {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  .button {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+}
+
+
