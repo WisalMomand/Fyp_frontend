@@ -1,114 +1,247 @@
-
-.container {
+/* === Centered Form Wrapper === */
+.centerWrapper {
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 100vh; 
-  width: 100vw; 
-  background-color: #f8f9fa;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+  background-image: url('/UOP_PIC.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(3px);
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
 }
 
-/* Login/Register Box */
-.card {
+/* Add overlay for better readability */
+.centerWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 0;
+}
+
+/* === Form Container === */
+.loginContainer {
   width: 100%;
   max-width: 400px;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 35px;
+  border-radius: 14px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* === Form Heading === */
+.loginContainer h2 {
   text-align: center;
-}
-
-/* Title Styling */
-.title {
-  font-size: 24px;
+  margin-bottom: 10px;
+  font-size: 26px;
+  color: #333;
   font-weight: bold;
 }
 
-/* Blue Highlight for Title */
-.highlight {
-  color: #007bff;
+.loginContainer p {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
 }
 
-/* Links */
-.link {
-  color: #007bff;
+.loginContainer a {
+  color: #2980b9;
   text-decoration: none;
+  font-weight: 500;
 }
 
-.link:hover {
-  text-decoration: underline;
-}
-
-/* Input Group */
-.inputGroup {
-  margin-bottom: 1rem;
-  text-align: left;
-}
-
-/* Labels */
-.label {
-  font-weight: bold;
+/* === Labels === */
+.loginContainer label {
+  font-weight: 600;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  color: #333;
 }
 
-/* Input Fields */
-.input {
+/* === Inputs === */
+.loginContainer input {
   width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 1rem;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #dfe6e9;
+  margin-bottom: 15px;
+  outline: none;
+  transition: border 0.3s ease;
 }
 
-/* Forgot Password Link */
-.forgotPassword {
-  text-align: right;
-  margin-bottom: 1rem;
+.loginContainer input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
 }
 
-/* Button Styling */
-.button {
+/* === Buttons === */
+.loginButton {
   width: 100%;
-  padding: 0.7rem;
-  background-color: #343a40;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
   color: #fff;
-  font-size: 1rem;
+  background-color: #2980b9;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
 }
 
-.button:hover {
-  background-color: #212529;
+.loginButton:hover {
+  background-color: #3498db;
+  transform: translateY(-1px);
 }
 
-/* Responsive Design */
+/* === Forgot Password === */
+.forgot {
+  display: block;
+  text-align: center;
+  color: #2980b9;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 15px 0;
+}
+
+/* === Error Box === */
+.error {
+  background-color: #ffe5e5;
+  color: red;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  border: 1px solid red;
+}
+
+/* === Enhanced Responsive Design === */
 @media (max-width: 768px) {
-  .container {
-    padding: 2rem;
+  .loginContainer {
+    padding: 30px;
   }
 
-  .card {
-    width: 90%;
-    max-width: 350px;
-    padding: 1.5rem;
+  .loginContainer h2 {
+    font-size: 24px;
+  }
+  
+  .centerWrapper {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loginContainer {
+    padding: 25px 20px;
+    margin: 15px 10px;
   }
 
-  .title {
+  .loginContainer h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  
+  .loginContainer p {
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+
+  .loginButton {
+    padding: 12px;
+    font-size: 15px;
+    margin-top: 12px;
+  }
+
+  .loginContainer input {
+    padding: 12px;
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  
+  .loginContainer label {
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  
+  .forgot {
+    font-size: 13px;
+    margin: 12px 0;
+  }
+  
+  .centerWrapper {
+    padding: 10px;
+  }
+  
+  .error {
+    padding: 8px;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Extra small devices (phones, 360px and down) */
+@media (max-width: 360px) {
+  .loginContainer {
+    padding: 20px 15px;
+    margin: 10px 5px;
+  }
+  
+  .loginContainer h2 {
     font-size: 20px;
   }
-
-  .input {
-    font-size: 0.9rem;
-    padding: 0.5rem;
+  
+  .loginContainer p {
+    font-size: 12px;
   }
-
-  .button {
-    font-size: 0.9rem;
-    padding: 0.6rem;
+  
+  .loginContainer input {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .loginButton {
+    padding: 11px;
+    font-size: 14px;
+  }
+  
+  .forgot {
+    font-size: 12px;
   }
 }
 
+/* Prevent zoom on input focus for iOS devices */
+@media (max-width: 480px) {
+  .loginContainer input {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}
 
+/* Ensure proper spacing for very tall but narrow screens */
+@media (max-height: 600px) and (max-width: 480px) {
+  .centerWrapper {
+    align-items: flex-start;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+}

@@ -1,5 +1,9 @@
 import jsPDF from "jspdf";
 
+
+const normalize = (str) =>
+  str?.replace(/\(.\)\s*/, "").trim().toLowerCase();
+
 const generateQuizPDF = (quiz, answers, studentEmail) => {
   const doc = new jsPDF();
   let y = 10;
@@ -22,7 +26,8 @@ const generateQuizPDF = (quiz, answers, studentEmail) => {
 
   quiz.mcqs.forEach((mcq, index) => {
     const selected = answers[mcq._id] || "Not Answered";
-    const isCorrect = selected === mcq.correctAnswer;
+    const isCorrect =
+      normalize(selected) === normalize(mcq.correctAnswer);
 
     if (isCorrect) score += 1;
 
@@ -32,13 +37,8 @@ const generateQuizPDF = (quiz, answers, studentEmail) => {
 
     doc.setFont("helvetica", "normal");
 
-    if (selected !== "Not Answered") {
-      doc.text(`Your Answer: ${selected}`, 12, y);
-      y += 6;
-    } else {
-      doc.text(`Your Answer: Not Answered`, 12, y);
-      y += 6;
-    }
+    doc.text(`Your Answer: ${selected}`, 12, y);
+    y += 6;
 
     if (isCorrect) {
       doc.setTextColor(0, 150, 0); // green
@@ -51,21 +51,29 @@ const generateQuizPDF = (quiz, answers, studentEmail) => {
     doc.setTextColor(0, 0, 0);
     y += 10;
 
-    // Page break if near end
+    // Page break if needed
     if (y > 270) {
       doc.addPage();
       y = 10;
     }
   });
 
-  // ✅ Total Score
+  // ✅ Summary
   const total = quiz.mcqs.length;
+  const percentage = Math.round((score / total) * 100);
+  const result = percentage >= 50 ? "✅ Passed" : "❌ Failed";
+
   y += 4;
   doc.setFont("helvetica", "bold");
   doc.text(`Total Score: ${score} / ${total}`, 10, y);
+  y += 6;
+  doc.text(`Percentage: ${percentage}%`, 10, y);
+  y += 6;
+  doc.text(`Result: ${result}`, 10, y);
 
   // ✅ Save file
   doc.save(`QuizReport_${quiz.title}_${studentEmail}.pdf`);
 };
 
 export default generateQuizPDF;
+

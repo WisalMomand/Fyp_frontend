@@ -1,29 +1,27 @@
 // src/Components/Student/StudentDashboard.jsx
 
 import React, { useEffect, useState } from "react";
-import styles from "./Dishboard.module.css";
+import styles from "./dishboard.module.css";
 import { FaTh, FaRegFileAlt } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import "../../firebase"; // ✅ Firebase must be initialized here
-import UserProfile from "../Common/UserProfile"; // ✅ Reusable profile component
+import "../../firebase";
+import UserProfile from "../Common/UserProfile";
 
 const StudentDashboard = () => {
   const [quizzes, setQuizzes] = useState([]);
-  const [studentEmail, setStudentEmail] = useState("");
-  const [profilePic, setProfilePic] = useState("/default.jpg"); // ✅ default fallback
+  const [profilePic, setProfilePic] = useState("/default.jpg");
+  const [studentName, setStudentName] = useState("");
   const navigate = useNavigate();
 
-  // 🔐 Get current user email & photo from Firebase Auth
+  // 🔐 Get current user & photo from Firebase Auth
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.email.endsWith("@gmail.com")) {
-        setStudentEmail(user.email);
-        setProfilePic(user.photoURL || "/default.jpg"); // ✅ Google photo or fallback
-        // Save for other components if needed
+        setProfilePic(user.photoURL || "/default.jpg");
         localStorage.setItem("photoURL", user.photoURL || "/default.jpg");
       } else {
         alert("Please log in with a valid Gmail account.");
@@ -31,24 +29,34 @@ const StudentDashboard = () => {
       }
     });
 
-    return () => unsubscribe(); // Cleanup listener
+    return () => unsubscribe();
   }, [navigate]);
 
-  // 📦 Fetch assigned quizzes for that student email
+  // 📦 Fetch assigned quizzes by semester & section from localStorage
   useEffect(() => {
-    if (studentEmail) {
-      axios
-        .get(`http://localhost:3000/api/assigned-quizzes/student/${studentEmail}`)
-        .then((res) => {
-          setQuizzes(res.data);
-          console.log("📦 Quizzes received from backend:", res.data);
-        })
-        .catch((err) => {
-          console.error("❌ Failed loading assigned quizzes", err);
-          alert("Failed to load assigned quizzes.");
-        });
+    const semester = localStorage.getItem("semester");
+    const section = localStorage.getItem("section");
+    const name = localStorage.getItem("name");
+
+    if (!semester || !section) {
+      alert("❌ Missing semester or section info. Please re-login.");
+      navigate("/login");
+      return;
     }
-  }, [studentEmail]);
+
+    setStudentName(name || "Student");
+
+    axios
+      .get(`http://localhost:3000/api/assigned-quizzes?semester=${semester}&section=${section}`)
+      .then((res) => {
+        setQuizzes(res.data);
+        console.log("📦 Quizzes received from backend:", res.data);
+      })
+      .catch((err) => {
+        console.error("❌ Failed loading assigned quizzes", err);
+        alert("Failed to load assigned quizzes.");
+      });
+  }, [navigate]);
 
   return (
     <div className={styles.dashboardContainer}>
@@ -69,7 +77,7 @@ const StudentDashboard = () => {
       <div className={styles.mainContent}>
         {/* ✅ Student Profile Header with Dynamic Photo */}
         <UserProfile
-          email={studentEmail}
+          email={studentName}
           role="Student"
           image={profilePic}
         />
@@ -77,13 +85,13 @@ const StudentDashboard = () => {
         {/* Quiz Section */}
         <div className={styles.quizSection}>
           {quizzes.length === 0 ? (
-            <p>No quizzes assigned to you yet.</p>
+            <p>No quizzes assigned to your semester/section yet.</p>
           ) : (
             quizzes.map((quiz, index) => (
               <div key={quiz._id} className={styles.quizContainer}>
                 <div className={styles.quizCard}>
                   <span>{quiz.title}</span>
-                  <button className={styles.dropdownBtn}>▼</button>
+                 
                 </div>
 
                 {index === 0 && <hr className={styles.divider} />}
@@ -109,6 +117,7 @@ const StudentDashboard = () => {
 };
 
 export default StudentDashboard;
+
 
 
 

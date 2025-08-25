@@ -1,164 +1,140 @@
-// src/Components/Register.jsx
 import React, { useState } from "react";
-import styles from "./Register.module.css";
-import { auth } from "../../firebase";
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
+import "./Register.css"; // ✅ regular CSS import
 
 const Register = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "",
-  });
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [name, setName] = useState("");
+  const [semester, setSemester] = useState("");
+  const [section, setSection] = useState("A");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (formData.password !== formData.confirmPassword) {
-      return setError("❌ Passwords do not match.");
-    }
-
-    if (!formData.role) {
-      return setError("❌ Please select a role.");
-    }
-
     try {
-      setLoading(true);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const firebaseUser = userCredential.user;
 
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
+      const userData = {
+        name,
+        email,
+        role,
+        semester: role === "student" ? semester : null,
+        section: role === "student" ? section : null,
+        photoURL: "default.jpg",
+      };
 
-      // ✅ Send email verification with redirect URL
-      await sendEmailVerification(auth.currentUser, {
-        url: "http://localhost:5173/login", // Change this for production
-      });
+      const res = await axios.post("http://localhost:3000/api/users", userData);
+      console.log("User registered:", res);
+      const id = res.data.user._id;
 
-      // 📤 Save user to backend (optional)
-      await axios.post("http://localhost:3000/api/register", {
-        uid: userCredential.user.uid,
-        name: formData.name,
-        email: formData.email,
-        role: formData.role,
-      });
+        if (res.data.user.status === "pending") {
+          setError("Your account is not approved yet. Please wait for admin approval.");
+          return;
+        }
 
-      alert("✅ Registered! A verification link has been sent to your email.");
-      navigate("/login");
+        localStorage.setItem("id", id);
+        localStorage.setItem("email", email);
+        localStorage.setItem("role", role);
+        localStorage.setItem("name", name);
+        localStorage.setItem("semester", semester || "");
+        localStorage.setItem("section", section || "");
+        localStorage.setItem("photoURL", "/default.jpg");
+        localStorage.setItem("status", res.data.user.status);
+        alert("✅ Registration successful!");
+        navigate(role === "student" ? "/student-dashboard" : "/teacher-dashboard");
     } catch (err) {
-      console.error("🔥 Registration error:", err);
-      if (err.code === "auth/email-already-in-use") {
-        setError("❌ Email already in use.");
-      } else if (err.code === "auth/invalid-email") {
-        setError("❌ Invalid email.");
-      } else {
-        setError(err.message);
-      }
-    } finally {
-      setLoading(false);
+      console.error("🔥 Registration error:", err.message);
+      setError("❌ Registration failed. Please try again.");
     }
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <h2 className={styles.title}>
-          Register to <br />
-          <span className={styles.highlight}>Generate Quiz</span>
-        </h2>
-        <p>
-          Already have an account?{" "}
-          <Link to="/login" className={styles.link}>Login</Link>
-        </p>
+    <div className="register-wrapper">
+      <div className="register-form-container">
+        <div className="form-content">
+          <h2>Create an Account</h2>
+          <p>
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {loading && <p style={{ color: "green" }}>Registering...</p>}
+          {error && <div className="error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Name</label>
+          <form onSubmit={handleRegister}>
+            <label>Name</label>
             <input
               type="text"
-              className={styles.input}
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
-          </div>
 
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Email</label>
+            <label>Email</label>
             <input
               type="email"
-              className={styles.input}
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
-          </div>
 
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Password</label>
+            <label>Password</label>
             <input
               type="password"
-              className={styles.input}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
+              placeholder="Create a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
-          </div>
 
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Confirm Password</label>
-            <input
-              type="password"
-              className={styles.input}
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Register as</label>
-            <select
-              className={styles.input}
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select an option</option>
-              <option value="teacher">Teacher</option>
+            <label>Role</label>
+            <select value={role} onChange={(e) => setRole(e.target.value)} required>
+              <option value="">Select Role</option>
               <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
             </select>
-          </div>
 
-          <button type="submit" className={styles.button} disabled={loading}>
-            {loading ? "Registering..." : "Register"}
-          </button>
-        </form>
+            {role === "student" && (
+              <>
+                <label>Semester</label>
+                <select value={semester} onChange={(e) => setSemester(e.target.value)} required>
+                  <option value="">Select Semester</option>
+                  <option value="1st">1st</option>
+                  <option value="2nd">2nd</option>
+                  <option value="3rd">3rd</option>
+                  <option value="4th">4th</option>
+                  <option value="5th">5th</option>
+                  <option value="6th">6th</option>
+                  <option value="7th">7th</option>
+                  <option value="8th">8th</option>
+                </select>
+
+                <label>Section</label>
+                <select value={section} onChange={(e) => setSection(e.target.value)}>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                   <option value="C">C</option>
+                    <option value="D">D</option>
+                </select>
+              </>
+            )}
+
+            <button type="submit">Register</button>
+          </form>
+
+          <div className="terms">
+            By registering, you agree to our Terms & Privacy.
+          </div>
+        </div>
       </div>
     </div>
   );

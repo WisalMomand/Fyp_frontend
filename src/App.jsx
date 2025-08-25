@@ -7,6 +7,12 @@ import TeacherDashboard from "./Components/Teacher/TeacherDashboard";
 import StudentDashboard from "./Components/Student/StudentDishboard";
 import McqManager from "./Components/McqManager";
 import StartQuiz from "./Components/Student/StartQuiz";
+import StudentResultPage from "./Components/Student/StudentResultPage";
+import ViewAllStudentResults from "./Components/Teacher/ViewAllStudentResults";
+import QuestionBank from "./Components/Teacher/QuestionBank";
+
+// Inside <Routes>
+
 
 const App = () => {
   return (
@@ -28,6 +34,13 @@ const App = () => {
 
         {/* Student Functional Pages */}
         <Route path="/start-quiz/:quizId" element={<StartQuiz />} />
+        <Route path="/results" element={<StudentResultPage />} />
+        <Route path="/teacher/view-results" element={<ViewAllStudentResults />} />
+        
+        <Route path="/teacher/question-bank" element={<QuestionBank />} />
+
+        {/* Redirect any unknown paths to Login */}
+
       </Routes>
     </Router>
   );
