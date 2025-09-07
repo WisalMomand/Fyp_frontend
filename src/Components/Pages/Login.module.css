@@ -1,4 +1,4 @@
-/* === Centered Form Wrapper === */
+
 .centerWrapper {
   display: flex;
   justify-content: center;
@@ -20,7 +20,7 @@
   overflow: auto;
 }
 
-/* Add overlay for better readability */
+
 .centerWrapper::before {
   content: '';
   position: absolute;
@@ -32,7 +32,6 @@
   z-index: 0;
 }
 
-/* === Form Container === */
 .loginContainer {
   width: 100%;
   max-width: 400px;
@@ -47,7 +46,7 @@
   z-index: 1;
 }
 
-/* === Form Heading === */
+
 .loginContainer h2 {
   text-align: center;
   margin-bottom: 10px;
@@ -69,7 +68,7 @@
   font-weight: 500;
 }
 
-/* === Labels === */
+
 .loginContainer label {
   font-weight: 600;
   display: block;
@@ -78,7 +77,7 @@
   color: #333;
 }
 
-/* === Inputs === */
+
 .loginContainer input {
   width: 100%;
   padding: 14px;
@@ -95,7 +94,7 @@
   box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
 }
 
-/* === Buttons === */
+
 .loginButton {
   width: 100%;
   padding: 14px;
@@ -115,7 +114,7 @@
   transform: translateY(-1px);
 }
 
-/* === Forgot Password === */
+
 .forgot {
   display: block;
   text-align: center;
@@ -125,7 +124,7 @@
   margin: 15px 0;
 }
 
-/* === Error Box === */
+
 .error {
   background-color: #ffe5e5;
   color: red;
@@ -135,7 +134,7 @@
   border: 1px solid red;
 }
 
-/* === Enhanced Responsive Design === */
+/* Media Quries*/
 @media (max-width: 768px) {
   .loginContainer {
     padding: 30px;
@@ -200,7 +199,7 @@
   }
 }
 
-/* Extra small devices (phones, 360px and down) */
+
 @media (max-width: 360px) {
   .loginContainer {
     padding: 20px 15px;
@@ -230,14 +229,14 @@
   }
 }
 
-/* Prevent zoom on input focus for iOS devices */
+
 @media (max-width: 480px) {
   .loginContainer input {
-    font-size: 16px; /* Prevents iOS zoom on focus */
+    font-size: 16px; 
   }
 }
 
-/* Ensure proper spacing for very tall but narrow screens */
+
 @media (max-height: 600px) and (max-width: 480px) {
   .centerWrapper {
     align-items: flex-start;
