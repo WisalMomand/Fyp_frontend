@@ -1,4 +1,4 @@
-/* === Perfectly Centered Form Wrapper === */
+
 .register-wrapper {
   display: flex;
   justify-content: center;
@@ -19,7 +19,6 @@
   overflow: auto;
 }
 
-/* Add a semi-transparent overlay for better readability */
 .register-wrapper::before {
   content: '';
   position: absolute;
@@ -31,7 +30,7 @@
   z-index: 0;
 }
 
-/* === Centered Form Container === */
+
 .register-form-container {
   width: 100%;
   max-width: 450px; /* Optimal form width */
@@ -126,7 +125,7 @@ form button:hover {
   color: #7f8c8d;
 }
 
-/* === Enhanced Responsive Adjustments === */
+/*Enhanced Responsive Adjustments  */
 @media (max-width: 480px) {
   .register-form-container {
     padding: 25px 20px;
@@ -170,7 +169,6 @@ form button:hover {
   }
 }
 
-/* Extra small devices (phones, 360px and down) */
 @media (max-width: 360px) {
   .register-form-container {
     padding: 20px 15px;
@@ -195,15 +193,15 @@ form button:hover {
   }
 }
 
-/* Prevent zoom on input focus for iOS devices */
+
 @media (max-width: 480px) {
   form input,
   form select {
-    font-size: 16px; /* Prevents iOS zoom on focus */
+    font-size: 16px;
   }
 }
 
-/* Ensure proper spacing for very tall but narrow screens */
+
 @media (max-height: 600px) and (max-width: 480px) {
   .register-wrapper {
     align-items: flex-start;
