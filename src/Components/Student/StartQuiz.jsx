@@ -23,11 +23,10 @@ const StartQuiz = () => {
 
         const mcqsArray = quizData?.mcqs || quizData?.quiz?.mcqs || [];
         if (!Array.isArray(mcqsArray) || mcqsArray.length === 0) {
-          setErrorMsg("⚠️ No MCQs found in this quiz.");
+          setErrorMsg("No MCQs found in this quiz.");
           return;
         }
 
-        // ✅ Ensure title is passed correctly
         const quizTitle = quizData?.title || quizData?.quizTitle || "Untitled Quiz";
 
         setQuiz({
@@ -39,7 +38,7 @@ const StartQuiz = () => {
         setTimeLeft((quizData?.duration || 0) * 60);
       } catch (error) {
         console.error("Error fetching quiz:", error);
-        setErrorMsg("❌ Error fetching quiz. Please try again later.");
+        setErrorMsg(" Error fetching quiz. Please try again later.");
       }
     };
 
@@ -75,14 +74,14 @@ const StartQuiz = () => {
 
     const handlePopState = () => {
       if (!submitted) {
-        alert("🔒 Back button is disabled during the quiz.");
+        alert(" Back button is disabled during the quiz.");
         window.history.pushState(null, null, window.location.href);
       }
     };
 
     const handleBlur = () => {
       if (!submitted) {
-        alert("🚫 You switched tabs or minimized the window. Quiz has been auto-submitted.");
+        alert(" You switched tabs or minimized the window. Quiz has been auto-submitted.");
         handleSubmit();
       }
     };
@@ -94,7 +93,7 @@ const StartQuiz = () => {
         e.key === "F12"
       ) {
         e.preventDefault();
-        alert("🚫 Keyboard shortcuts are disabled during the quiz.");
+        alert(" Keyboard shortcuts are disabled during the quiz.");
       }
     };
 
@@ -132,7 +131,7 @@ const StartQuiz = () => {
     const studentName = localStorage.getItem("name");
 
     if (!studentEmail || !studentName) {
-      setErrorMsg("❌ Missing student email or name in localStorage.");
+      setErrorMsg(" Missing student email or name in localStorage.");
       return;
     }
 
@@ -154,14 +153,14 @@ const StartQuiz = () => {
     const percentage = Math.round((score / quiz.mcqs.length) * 100);
 
     try {
-      // ✅ 1. Submit for Teacher View
+  
       await axios.post("http://localhost:3000/api/quiz-results", {
         teacherId,
         studentName,
         studentEmail,
         semester: quiz.semester,
         section: quiz.section,
-        quizTitle: quiz.title, // ✅ Ensure this exists
+        quizTitle: quiz.title, 
         subject: quiz.subject,
         score,
         totalMcqs: quiz.mcqs.length,
@@ -171,7 +170,7 @@ const StartQuiz = () => {
         teacherName: quiz.teacherName,
       });
 
-      // ✅ 2. Submit for Student View
+    
       await axios.post("http://localhost:3000/api/student-results/submit", {
         studentEmail,
         quizTitle: quiz.title,
@@ -186,10 +185,10 @@ const StartQuiz = () => {
         })),
       });
 
-      console.log("✅ Results submitted to both Teacher and Student endpoints.");
+      console.log(" Results submitted to both Teacher and Student endpoints.");
     } catch (err) {
-      console.error("❌ Failed to submit quiz:", err);
-      setErrorMsg("❌ Failed to submit quiz result.");
+      console.error(" Failed to submit quiz:", err);
+      setErrorMsg(" Failed to submit quiz result.");
     }
   };
 
@@ -203,11 +202,11 @@ const StartQuiz = () => {
   if (showInstructions) {
     return (
       <div className={styles.container}>
-        <h2>📢 Quiz Instructions</h2>
+        <h2> Quiz Instructions</h2>
         <ul>
-          <li>🚫 Do not switch tabs or minimize. It will auto-submit and mark you failed.</li>
-          <li>🛑 Avoid Back/Refresh/DevTools. They are disabled.</li>
-          <li>🕒 Time starts after clicking "Start Quiz".</li>
+          <li> Do not switch tabs or minimize. It will auto-submit and mark you failed.</li>
+          <li>Avoid Back/Refresh/DevTools. They are disabled.</li>
+          <li>Time starts after clicking "Start Quiz".</li>
         </ul>
         <button className={styles.submitBtn} onClick={() => setShowInstructions(false)}>
           Start Quiz
