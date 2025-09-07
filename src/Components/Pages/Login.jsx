@@ -8,11 +8,7 @@ import {
 } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-<<<<<<< HEAD
-import styles from "./Login.module.css";
-=======
-import styles from "./Login.module.css"; 
->>>>>>> a6eb05c (Add dishboard CSS file and update components)
+import styles from "./Login.module.css"; // CSS module import (recommended)
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -61,7 +57,7 @@ const Login = () => {
         navigate(userData.role === "student" ? "/student-dashboard" : "/teacher-dashboard");
       } else {
         console.error("User fetch error:", err.message);
-        setError(" Failed to fetch user.");
+        setError("❌ Failed to fetch user.");
       }
     }
   };
@@ -74,7 +70,7 @@ const Login = () => {
     localStorage.setItem("semester", userData.semester || "");
     localStorage.setItem("section", userData.section || "");
     localStorage.setItem("photoURL", userPhotoURL || "/default.jpg");
-    alert("Login successful!");
+    alert("✅ Login successful!");
   };
 
   const handleLogin = async (e) => {
@@ -87,7 +83,7 @@ const Login = () => {
       await fetchAndStoreUserDetails(user.email, user.photoURL);
     } catch (err) {
       console.error("Login error:", err.message);
-      setError(" Email or password is incorrect.");
+      setError("❌ Email or password is incorrect.");
     }
   };
 
@@ -100,30 +96,30 @@ const Login = () => {
       const user = result.user;
 
       if (!user.email.endsWith("@gmail.com")) {
-        setError(" Only Gmail accounts are allowed.");
+        setError("❌ Only Gmail accounts are allowed.");
         return;
       }
 
       await fetchAndStoreUserDetails(user.email, user.photoURL);
     } catch (err) {
       console.error("Google login error:", err.message);
-      setError(" Google login failed.");
+      setError("❌ Google login failed.");
     }
   };
 
   const handleResetPassword = async () => {
     if (!resetEmail) {
-      setError("⚠ Enter email to reset password.");
+      setError("⚠️ Enter email to reset password.");
       return;
     }
 
     try {
       await sendPasswordResetEmail(auth, resetEmail);
-      alert(" Password reset email sent.");
+      alert("✅ Password reset email sent.");
       setShowReset(false);
     } catch (err) {
       console.error("Reset error:", err.message);
-      setError(" Failed to send reset email.");
+      setError("❌ Failed to send reset email.");
     }
   };
 
