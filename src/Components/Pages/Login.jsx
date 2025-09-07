@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import styles from "./Login.module.css"; // CSS module import (recommended)
+import styles from "./Login.module.css"; 
 
 const Login = () => {
   const [email, setEmail] = useState("");
