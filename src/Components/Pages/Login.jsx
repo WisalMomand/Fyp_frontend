@@ -8,7 +8,11 @@ import {
 } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+<<<<<<< HEAD
 import styles from "./Login.module.css";
+=======
+import styles from "./Login.module.css"; 
+>>>>>>> a6eb05c (Add dishboard CSS file and update components)
 
 const Login = () => {
   const [email, setEmail] = useState("");
