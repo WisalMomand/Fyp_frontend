@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
-import "./Register.css"; // ✅ regular CSS import
+import "./Register.css";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -49,11 +49,11 @@ const Register = () => {
         localStorage.setItem("section", section || "");
         localStorage.setItem("photoURL", "/default.jpg");
         localStorage.setItem("status", res.data.user.status);
-        alert("✅ Registration successful!");
+        alert(" Registration successful!");
         navigate(role === "student" ? "/student-dashboard" : "/teacher-dashboard");
     } catch (err) {
-      console.error("🔥 Registration error:", err.message);
-      setError("❌ Registration failed. Please try again.");
+      console.error("Registration error:", err.message);
+      setError(" Registration failed. Please try again.");
     }
   };
 
